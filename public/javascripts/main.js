@@ -36,11 +36,12 @@ document.addEventListener("DOMContentLoaded", function () {
         let cdID = cdIDArray[Math.floor(Math.random() * cdIDArray.length)];
         let pricePaid = pricePaidArray[Math.floor(Math.random() * pricePaidArray.length)];
         
-        var t = new Date();
-        t.setSeconds(t.getSeconds() + Math.floor(Math.random() * 30));
+        var d1 = new Date (),
+        d2 = new Date ( d1 );
+        d2.setMinutes ( d1.getMinutes() + (Math.floor(Math.random() * 30) + 1) );
 
 
-        console.log(storeID, salesID, cdID, pricePaid, t)
+        console.log(storeID, salesID, cdID, pricePaid, d2)
         
         
     })
@@ -55,10 +56,11 @@ document.addEventListener("DOMContentLoaded", function () {
         let cdID = cdIDArray[Math.floor(Math.random() * cdIDArray.length)];
         let pricePaid = pricePaidArray[Math.floor(Math.random() * pricePaidArray.length)];
         
-        var t = new Date();
-        t.setSeconds(t.getSeconds() + Math.floor(Math.random() * 30));
+        var d1 = new Date (),
+        d2 = new Date ( d1 );
+        d2.setMinutes ( d1.getMinutes() + (Math.floor(Math.random() * 30) + 1) );
             
-            let newOrder = new OrderObject(storeID, salesID, cdID, pricePaid, t)
+            let newOrder = new OrderObject(storeID, salesID, cdID, pricePaid, d2)
     
             fetch('/AddOrder', {
                 method: "POST",

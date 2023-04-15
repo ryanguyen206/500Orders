@@ -115,7 +115,7 @@ router.get('/sortSalesByStoreID/:STOREID', function(req,res) {
   OrderSchema.aggregate([
 
     {$match: {storeID : parseInt(storeSwag)}},
-
+    {$group: {_id:"$salesPersonID", total:{$sum: "$pricePaid"}}},
     {$sort: {total: -1}}
 
 

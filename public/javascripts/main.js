@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             let res = await fetch("/sortSalesByStoreID/" + current)
             let data = await res.json();
+            displayByStore(data)
             console.log(data)
             
         } catch (err) {
@@ -186,6 +187,24 @@ function displayGetAllWhoSold(data) {
     };
 
     textString.textContent = "PersonID                Sales Total"
+    var ul = document.createElement('ul');
+
+    data.forEach(function (element,) {   // use handy array forEach method
+        var li = document.createElement('li');
+        li.innerHTML = element._id + " &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp " + 
+         " &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp  " + element.total;
+        ul.appendChild(li);
+    });
+    divMovieList.appendChild(ul)
+}
+
+function displayByStore(data) {
+    var divMovieList = document.getElementById("divMovieList");
+    while (divMovieList.firstChild) {    // remove any old data so don't get duplicates
+        divMovieList.removeChild(divMovieList.firstChild);
+    };
+
+    textString.textContent = "StoreID   Sales Total        "
     var ul = document.createElement('ul');
 
     data.forEach(function (element,) {   // use handy array forEach method

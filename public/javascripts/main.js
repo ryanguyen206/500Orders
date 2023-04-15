@@ -27,7 +27,38 @@ let selectedGenre = "not selected";
 
 document.addEventListener("DOMContentLoaded", function () {
 
- 
+    let textString = document.getElementById("swag");
+
+    let refresh = document.getElementById("refreshList").addEventListener("click",  function() {
+        createList();
+    })
+
+    document.getElementById("getStoresWhosePriceIsLessThan5").addEventListener("click", async function(){
+        let current = document.getElementById("currentStore").value
+        console.log(current)
+        try {
+            let res = await fetch("/sortSalesByStoreID/" + current)
+            let data = await res.json();
+            console.log(data)
+            
+        } catch (err) {
+            alert(err)
+        }
+    })
+
+    document.getElementById("getAllWhoSoldMost").addEventListener("click", async function() {
+        try {
+            let res = await fetch('/getAllWhoSold');
+            let data = await res.json();
+            displayGetAllWhoSold(data)
+            console.log(data);
+        } catch(err){
+            alert(err)
+        }
+        
+
+     
+    })
 
 // add button events ************************************************************************
     document.getElementById("dummyButtonAdd").addEventListener("click", function() {
@@ -48,10 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
 //button one - 
     document.getElementById("buttonAdd").addEventListener("click", function () {
         
-        orderArray = [];
 
         for (let i=0; i<500; i++) {
-           let storeID = storeIDArray[Math.floor(Math.random() * storeIDArray.length)];
+        let storeID = storeIDArray[Math.floor(Math.random() * storeIDArray.length)];
         let salesID = determineSalesID(storeID);
         let cdID = cdIDArray[Math.floor(Math.random() * cdIDArray.length)];
         let pricePaid = pricePaidArray[Math.floor(Math.random() * pricePaidArray.length)];
@@ -123,12 +153,7 @@ function determineSalesID(storeID) {
 function createList() {
 // update local array from server
 
-    fetch('/getAllOrders')
-    // Handle success
-    .then(response => response.json())  // get the data out of the response object
-    .then( responseData => fillUL(responseData))    //update our array and li's
-    .catch(err => console.log('Request Failed', err)); // Catch errors
-
+ 
     $.get("/getAllOrders", function(data, status){  // AJAX get
         orderArray = data;  // put the returned server json data into our local array
         
@@ -154,6 +179,24 @@ function createList() {
 };
 
 
+function displayGetAllWhoSold(data) {
+    var divMovieList = document.getElementById("divMovieList");
+    while (divMovieList.firstChild) {    // remove any old data so don't get duplicates
+        divMovieList.removeChild(divMovieList.firstChild);
+    };
+
+    textString.textContent = "PersonID                Sales Total"
+    var ul = document.createElement('ul');
+
+    data.forEach(function (element,) {   // use handy array forEach method
+        var li = document.createElement('li');
+        li.innerHTML = element._id + " &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp " + 
+         " &nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp  " + element.total;
+        ul.appendChild(li);
+    });
+    divMovieList.appendChild(ul)
+}
+
 
 function fillUL(data) {
         // clear prior data
@@ -162,6 +205,7 @@ function fillUL(data) {
         divMovieList.removeChild(divMovieList.firstChild);
     };
 
+    
     var ul = document.createElement('ul');
     orderArray = data;
     orderArray.forEach(function (element,) {   // use handy array forEach method
